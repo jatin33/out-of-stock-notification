@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tiny-thunder-cd1f",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-24",
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "MAX_NOTIFICATIONS": 3,
+    "TWILIO_ACCOUNT_SID": "xxx",
+    "TWILIO_AUTH_TOKEN": "xxx",
+    "TWILIO_PHONE_NUMBER": "xxx",
+    "TARGET_PHONE_NUMBER": "xxx"
+ },
+ "triggers": {
+    "crons": [
+     "*/5 * * * *"
+    ]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "STOCK_KV",
+      "id": "8d0c25299b684c86b20c866fb8ba5b8d"
+    }
+  ]
+}
