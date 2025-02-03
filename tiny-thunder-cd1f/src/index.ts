@@ -164,7 +164,7 @@ export default {
 				// 	}
 				// });
 				console.log(`${product?.name} is out of stock`);
-				await sendSMS(env, `${product?.name} is out of stock`);
+				// await sendSMS(env, `${product?.name} is out of stock`);
 			} else {
 				// env.STOCK_KV.put("out-of-stock", `0`, {
 				// 	metadata: {
@@ -172,6 +172,9 @@ export default {
 				// 	}
 				// });
 				await sendSMS(env, `${product?.name} is back in stock`);
+				console.log(`${product?.name} is back in stock`, {
+					product
+				});
 			}
 
 			// const outOfStockCountInKV = await env.STOCK_KV.getWithMetadata("out-of-stock");
@@ -213,6 +216,10 @@ async function sendSMS(env: Env, message: string) {
 
 	const response = await fetch(endpoint, request);
 	const result = await response.json();
+
+	if (response.status !== 201 && response.status !== 200) {
+		console.error("Unable to send sms", response);
+	}
 
 	return Response.json(result);
 }
