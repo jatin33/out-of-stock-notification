@@ -143,6 +143,7 @@ export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const monitor = new StockMonitor(AMUL_API_URL);
 		const product = await monitor.checkSpecificProduct('LASCP40_30');
+		await sendSMS(env, !product?.inStock ? `${product?.name} is out of stock` : `${product?.name} is back in stock`);
 		return new Response(!product?.inStock ? `${product?.name} is out of stock` : `${product?.name} is back in stock`);
 	},
 
@@ -192,8 +193,9 @@ export default {
 async function sendSMS(env: Env, message: string) {
 	const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${env.TWILIO_ACCOUNT_SID}/Messages.json`;
 
+	// always update wrangler.json to make this work correctly
 	const encoded = new URLSearchParams({
-		To: env.TARGET_PHONE_NUMBER,
+		To: `+${env.TARGET_PHONE_NUMBER}`,
 		From: env.TWILIO_PHONE_NUMBER,
 		Body: `Hello from Amul stock notifier: ${message}`,
 	});
